@@ -23,10 +23,11 @@ jobs:
           gradle-version: 8.1.1
 
       - name: Build with Gradle
+        working-directory: mandela-horror-mod
         run: gradle build --no-daemon
 
       - name: Upload built jar
         uses: actions/upload-artifact@v4
         with:
           name: horrormod-jar
-          path: build/libs/*.jar
+          path: mandela-horror-mod/build/libs/*.jar
