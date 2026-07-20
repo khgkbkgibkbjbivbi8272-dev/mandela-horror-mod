@@ -17,32 +17,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Unzip project archive if present
-        run: |
-          if [ ! -f build.gradle ]; then
-            echo "build.gradle not found in root — looking for a zip to extract"
-            ZIP_FILE=$(find . -maxdepth 1 -iname "*.zip" | head -n 1)
-            if [ -z "$ZIP_FILE" ]; then
-              echo "No zip file found either — nothing to extract, build will likely fail"
-            else
-              echo "Found zip: $ZIP_FILE — extracting"
-              rm -rf extracted_tmp
-              unzip -o "$ZIP_FILE" -d extracted_tmp
-              if [ -f extracted_tmp/build.gradle ]; then
-                cp -a extracted_tmp/. .
-              else
-                SUBDIR=$(find extracted_tmp -maxdepth 1 -mindepth 1 -type d | head -n 1)
-                echo "build.gradle nested inside: $SUBDIR"
-                cp -a "$SUBDIR"/. .
-              fi
-              rm -rf extracted_tmp
-            fi
-          else
-            echo "build.gradle already in root — nothing to extract"
-          fi
-
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.1.1
 
